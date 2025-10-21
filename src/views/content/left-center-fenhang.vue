@@ -1,81 +1,49 @@
-
 <template>
-  <Echart id="leftCenter" :options="options" class="left_center_inner" v-if="pageflag" ref="charts" />
-
+  <Echart
+    id="leftCenter"
+    :options="options"
+    class="left_center_inner"
+    v-if="pageflag"
+    ref="charts"
+  />
 </template>
 
 <script>
 import Echart from "../components/echart/index.vue";
-import { currentGET } from 'api/modules'
 export default {
-  components: {Echart},
+  components: { Echart },
   data() {
     return {
       options: {},
       countUserNumData: {
         onlineNum: 850,
         offlineNum: 150,
-        totalNum: 1000
+        totalNum: 1000,
       },
       pageflag: true,
-      timer: null
+      timer: null,
     };
   },
   created() {
-    this.getData()
+    this.getData();
   },
-  mounted() {
-  },
+  mounted() {},
   beforeDestroy() {
-    this.clearData()
-
+    this.clearData();
   },
   methods: {
     clearData() {
       if (this.timer) {
-        clearInterval(this.timer)
-        this.timer = null
+        clearInterval(this.timer);
+        this.timer = null;
       }
     },
     getData() {
-      this.pageflag = true
-      // this.pageflag =false
-
-      currentGET('big1').then(res => {
-        //只打印一次
-        if (!this.timer) {
-          console.log("设备总览", res);
-        }
-        if (res.success) {
-          // this.countUserNumData = res.data
-          this.$nextTick(() => {
-            this.init()
-          })
-
-        } else {
-          this.pageflag = false
-          this.$Message({
-            text: res.msg,
-            type: 'warning'
-          })
-        }
-      })
-    },
-    //轮询
-    switper() {
-      if (this.timer) {
-        return
-      }
-      let looper = (a) => {
-        this.getData()
-      };
-    
-      let myChart = this.$refs.charts.chart
-      myChart.on('mouseover', params => {
-        this.clearData()
+      this.$nextTick(() => {
+        this.init();
       });
-    
     },
+
     init() {
       let total = this.countUserNumData.totalNum;
       let colors = ["#ECA444", "#33A1DB", "#56B557"];
@@ -120,8 +88,6 @@ export default {
               shadowColor: colors[1],
             },
           },
-
-
         ],
       };
       this.options = {
@@ -186,11 +152,10 @@ export default {
               length: 20, // 第一段线 长度
               length2: 36, // 第二段线 长度
               show: true,
-            
             },
-              emphasis: {
-                show: true,
-              },
+            emphasis: {
+              show: true,
+            },
           },
           {
             ...piedata,
@@ -218,5 +183,4 @@ export default {
   },
 };
 </script>
-<style lang='scss' scoped>
-</style>
+<style lang="scss" scoped></style>

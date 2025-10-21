@@ -2,13 +2,9 @@
 import Vue from "vue";
 import App from "./App.vue";
 import router from './router'
-import {
-  loading,
-  borderBox13,
-  digitalFlop,
-  capsuleChart,
-  borderBox8,
-} from "@jiaminghi/data-view";
+import dataV from '@jiaminghi/data-view'
+// datav组件
+Vue.use(dataV);
 
 import "@/assets/css/public.scss";
 import "@/assets/css/index.scss";
@@ -20,12 +16,6 @@ Vue.config.productionTip = false;
 
 
 
-// datav组件
-Vue.use(loading);
-Vue.use(borderBox13);
-Vue.use(borderBox8);
-Vue.use(digitalFlop);
-Vue.use(capsuleChart);
 
 new Vue({router,
   render: (h) => h(App),

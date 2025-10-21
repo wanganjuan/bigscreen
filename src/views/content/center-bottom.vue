@@ -10,10 +10,9 @@
 
 <script>
 import Echart from "../components/echart/index.vue";
-import { currentGET } from "api";
 import { graphic } from "echarts";
 export default {
-  components: {Echart},
+  components: { Echart },
   data() {
     return {
       options: {},
@@ -25,19 +24,85 @@ export default {
   },
   methods: {
     getData() {
-      this.pageflag = true;
-      currentGET("big6", { companyName: this.companyName }).then((res) => {
-        console.log("安装计划", res);
-        if (res.success) {
-          this.init(res.data);
-        } else {
-          this.pageflag = false;
-          this.$Message({
-            text: res.msg,
-            type: "warning",
-          });
-        }
-      });
+      const res = {
+        success: true,
+        data: {
+          barData: [
+            27, 15, 66, 62, 92, 77, 98, 99, 19, 54, 51, 10, 40, 71, 61, 13, 54,
+            13, 86, 86, 89, 98, 13, 77, 52, 63, 49, 11, 14, 51,
+          ],
+          category: [
+            "2025-9-20",
+            "2025-9-21",
+            "2025-9-22",
+            "2025-9-23",
+            "2025-9-24",
+            "2025-9-25",
+            "2025-9-26",
+            "2025-9-27",
+            "2025-9-28",
+            "2025-9-29",
+            "2025-9-30",
+            "2025-10-1",
+            "2025-10-2",
+            "2025-10-3",
+            "2025-10-4",
+            "2025-10-5",
+            "2025-10-6",
+            "2025-10-7",
+            "2025-10-8",
+            "2025-10-9",
+            "2025-10-10",
+            "2025-10-11",
+            "2025-10-12",
+            "2025-10-13",
+            "2025-10-14",
+            "2025-10-15",
+            "2025-10-16",
+            "2025-10-17",
+            "2025-10-18",
+            "2025-10-19",
+          ],
+          lineData: [
+            57, 30, 115, 122, 122, 142, 189, 133, 89, 58, 79, 38, 98, 159, 84,
+            89, 144, 65, 166, 176, 173, 147, 51, 81, 72, 86, 133, 35, 44, 104,
+          ],
+          rateData: [
+            "47",
+            "50",
+            "57",
+            "51",
+            "75",
+            "54",
+            "52",
+            "74",
+            "21",
+            "93",
+            "65",
+            "26",
+            "41",
+            "45",
+            "73",
+            "15",
+            "38",
+            "20",
+            "52",
+            "49",
+            "51",
+            "67",
+            "25",
+            "95",
+            "72",
+            "73",
+            "37",
+            "31",
+            "32",
+            "49",
+          ],
+        },
+      };
+
+      this.init(res.data);
     },
     init(newData) {
       this.options = {

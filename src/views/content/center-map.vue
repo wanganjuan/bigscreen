@@ -1,4 +1,3 @@
-
 <template>
   <div class="centermap">
     <div class="maptitle">
@@ -25,12 +24,11 @@
 </template>
 
 <script>
-import { currentGET } from "api/modules";
 import * as echarts from "echarts";
 import Echart from "../components/echart/index.vue";
-import basemapJson from '../config/basemap.json'
+import basemapJson from "../config/basemap.json";
 export default {
-  components: {Echart},
+  components: { Echart },
   data() {
     return {
       maptitle: "系统核对明细笔数",
@@ -43,21 +41,37 @@ export default {
   created() {},
 
   mounted() {
-
     this.getData("china");
   },
   methods: {
     getData(code) {
-      currentGET("big8", { regionCode: code }).then((res) => {
-        console.log("设备分布", res);
-        if (res.success) {
+      const res = {
+        success: true,
+        data: {
+          dataList: [
+            { name: "湖北省", value: 316 },
+            { name: "河北省", value: 684 },
+            { name: "北京", value: 835 },
+            { name: "山东省", value: 9 },
+            { name: "山东省", value: 313 },
+            { name: "四川省", value: 165 },
+            { name: "西藏自治区", value: 653 },
+            { name: "广东省", value: 736 },
+          ],
+          regionCode: "china",
+        },
+      };
+      if (res.success) {
           // this.getGeojson(res.data.regionCode, res.data.dataList);
-          this.getGeojson(res.data.regionCode, res.data.dataList.map(item => ({...item, name: item.name.replace('省', '')})));
+          this.getGeojson(
+            res.data.regionCode,
+            res.data.dataList.map((item) => ({
+              ...item,
+              name: item.name.replace("省", ""),
+            }))
+          );
           this.mapclick();
-        } else {
-          this.$message.warning(res.msg);
         }
-      });
     },
     /**
      * @description: 获取geojson
@@ -66,29 +80,31 @@ export default {
      * @return {*}
      */
     async getGeojson(name, mydata) {
-      console.log(name, mydata)
+      console.log(name, mydata);
       this.code = name;
       //如果要展示南海群岛并且展示的是中国的话
-      let geoname=name
+      let geoname = name;
       if (this.isSouthChinaSea && name == "china") {
         geoname = "chinaNanhai";
       }
-      console.log(geoname)
+      console.log(geoname);
       //如果有注册地图的话就不用再注册 了
       let mapjson = echarts.getMap(name);
       if (mapjson) {
         mapjson = mapjson.geoJSON;
       } else {
-        mapjson = basemapJson
+        mapjson = basemapJson;
         echarts.registerMap(name, mapjson);
       }
       let cityCenter = {};
       let arr = mapjson.features;
-    
+
       //根据geojson获取省份中心点
       arr.map((item) => {
         cityCenter[item.properties.name] =
-         item.properties.cp ||  item.properties.centroid || item.properties.center;
+          item.properties.cp ||
+          item.properties.centroid ||
+          item.properties.center;
       });
       let newData = [];
       // console.log(mydata, cityCenter, arr, 123)
@@ -282,25 +298,18 @@ export default {
             },
           },
         ],
-         //动画效果
-            // animationDuration: 1000,
-            // animationEasing: 'linear',
-            // animationDurationUpdate: 1000
+        //动画效果
+        // animationDuration: 1000,
+        // animationEasing: 'linear',
+        // animationDurationUpdate: 1000
       };
       this.options = option;
     },
-    message(text) {
-      this.$message({
-        text: text,
-        type: "warning",
-      });
-    },
+
     mapclick() {
       if (this.echartBindClick) return;
       //单击切换到级地图，当mapCode有值,说明可以切换到下级地图
-      this.$refs.CenterMap.chart.on("click", (params) => {
-      
-      });
+      this.$refs.CenterMap.chart.on("click", (params) => {});
       this.echartBindClick = true;
     },
   },
