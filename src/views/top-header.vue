@@ -8,79 +8,88 @@
         <span class="title-text">可配置演示系统大屏可视化</span>
       </div>
     </div>
-    <div class="timers">{{ dateYear }} {{ dateWeek }} {{ dateDay }}</div>
+    <div class="timers"><TimeDesc /></div>
   </div>
 </template>
 <script>
-/**
- * @param {date} time 需要转换的时间
- * @param {String} fmt 需要转换的格式 如 yyyy-MM-dd、yyyy-MM-dd HH:mm:ss
- */
-export function formatTime(time, fmt) {
-  if (!time) return "";
-  else {
-    const date = new Date(time);
-    const o = {
-      "M+": date.getMonth() + 1,
-      "d+": date.getDate(),
-      "H+": date.getHours(),
-      "m+": date.getMinutes(),
-      "s+": date.getSeconds(),
-      "q+": Math.floor((date.getMonth() + 3) / 3),
-      S: date.getMilliseconds(),
-    };
-    if (/(y+)/.test(fmt))
-      fmt = fmt.replace(
-        RegExp.$1,
-        (date.getFullYear() + "").substr(4 - RegExp.$1.length)
-      );
-    for (const k in o) {
-      if (new RegExp("(" + k + ")").test(fmt)) {
-        fmt = fmt.replace(
-          RegExp.$1,
-          RegExp.$1.length === 1
-            ? o[k]
-            : ("00" + o[k]).substr(("" + o[k]).length)
-        );
-      }
-    }
-    return fmt;
-  }
-}
-
+import TimeDesc from './time-desc.vue';
 export default {
-  data() {
-    return {
-      timing: null,
+ components: {
+  TimeDesc
+ },
 
-      dateDay: null,
-      dateYear: null,
-      dateWeek: null,
-      weekday: ["周日", "周一", "周二", "周三", "周四", "周五", "周六"],
-    };
-  },
 
-  computed: {},
-  created() {},
-  mounted() {
-    this.timeFn();
-  },
-  beforeDestroy() {
-    clearInterval(this.timing);
-  },
-  methods: {
-    timeFn() {
-      this.timing = setInterval(() => {
-        this.dateDay = formatTime(new Date(), "HH: mm: ss");
-        this.dateYear = formatTime(new Date(), "yyyy-MM-dd");
-        this.dateWeek = this.weekday[new Date().getDay()];
-      }, 1000);
-    },
- 
-  },
 };
 </script>
 
-<style lang="scss">
-@import "./home.scss";
+<style lang="scss" scoped>
+  .title_wrap {
+    height: 60px;
+    background-image: url("./img/top.png");
+    background-size: cover;
+    background-position: center center;
+    position: relative;
+    margin-bottom: 4px;
+
+    .guang {
+        position: absolute;
+        bottom: -26px;
+        background-image: url("./img/guang.png");
+        background-position: 80px center;
+        width: 100%;
+        height: 56px;
+    }
+
+    .zuojuxing,
+    .youjuxing {
+        position: absolute;
+        top: -2px;
+        width: 140px;
+        height: 6px;
+        background-image: url("./img/headers/juxing1.png");
+    }
+
+    .zuojuxing {
+
+        left: 11%;
+    }
+
+    .youjuxing {
+        right: 11%;
+        transform: rotate(180deg);
+    }
+
+    .timers {
+        position: absolute;
+        right: 0;
+        top: 30px;
+        font-size: 18px;
+        display: flex;
+        align-items: center;
+
+        .blq-icon-shezhi02 {
+            cursor: pointer;
+        }
+    }
+}
+
+  .title {
+      position: relative;
+      // width: 500px;
+      text-align: center;
+      background-size: cover;
+      color: transparent;
+      height: 60px;
+      line-height: 46px;
+
+      .title-text {
+          font-size: 38px;
+          font-weight: 900;
+          letter-spacing: 6px;
+          width: 100%;
+          background: linear-gradient(92deg, #0072FF 0%, #00EAFF 48.8525390625%, #01AAFF 100%);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+      }
+  }
 </style>

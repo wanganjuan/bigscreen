@@ -3,7 +3,7 @@
     id="leftCenter"
     :options="options"
     class="left_center_inner"
-    v-if="pageflag"
+  
     ref="charts"
   />
 </template>
@@ -20,7 +20,7 @@ export default {
         offlineNum: 150,
         totalNum: 1000,
       },
-      pageflag: true,
+    
       timer: null,
     };
   },

@@ -1,25 +1,21 @@
-
 <template>
   <Echart
     id="rightTop"
     :options="option"
     class="right_top_inner"
-    v-if="pageflag"
     ref="charts"
   />
 </template>
 
 <script>
 import Echart from "../components/echart/index.vue";
-import { currentGET } from "api/modules";
 import { graphic } from "echarts";
 export default {
   components: { Echart },
   data() {
     return {
       option: {},
-      pageflag: false,
-      timer: null,
+     
     };
   },
   created() {},
@@ -27,53 +23,30 @@ export default {
   mounted() {
     this.getData();
   },
-  beforeDestroy() {
-    this.clearData();
-  },
+
   methods: {
-    clearData() {
-      if (this.timer) {
-        clearInterval(this.timer);
-        this.timer = null;
-      }
-    },
+  
     getData() {
-      this.pageflag = true;
-      // this.pageflag =false
-      currentGET("big4").then((res) => {
-        if (!this.timer) {
-          console.log("报警次数", res);
-        }
-        if (res.success) {
-          this.countUserNumData = res.data;
-          this.$nextTick(() => {
-            this.init(res.data.dateList, res.data.numList, res.data.numList2);
-            // this.switper();
-          });
-        } else {
-          this.pageflag = false;
-          this.$Message({
-            text: res.msg,
-            type: "warning",
-          });
-        }
-      });
-    },
-    //轮询
-    switper() {
-      if (this.timer) {
-        return;
-      }
-      let looper = (a) => {
-        this.getData();
+      const res = {
+        success: true,
+        data: {
+          dateList: [
+            "2021-11",
+            "2021-12",
+            "2022-01",
+            "2022-02",
+            "2022-03",
+            "2022-04",
+          ],
+          numList: [65, 20, 31, 33, 79, 42],
+          numList2: [69, 62, 49, 51, 12, 94],
+        },
       };
-   
-      let myChart = this.$refs.charts.chart;
-      myChart.on("mouseover", (params) => {
-        this.clearData();
+      this.$nextTick(() => {
+        this.init(res.data.dateList, res.data.numList, res.data.numList2);
       });
-   
     },
+
     init(xData, yData, yData2) {
       this.option = {
         xAxis: {

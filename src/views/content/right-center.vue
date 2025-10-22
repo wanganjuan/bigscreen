@@ -1,74 +1,58 @@
-
 <template>
   <div class="right_bottom">
-    <dv-capsule-chart :config="config" style="width:100%;height:260px" />
+    <dv-capsule-chart :config="config" style="width: 100%; height: 260px" />
   </div>
 </template>
 
 <script>
-import { currentGET } from 'api/modules'
 export default {
   data() {
     return {
-      gatewayno: '',
+      gatewayno: "",
       config: {
         showValue: true,
         unit: "次",
-        data: []
+        data: [],
       },
-
     };
   },
   created() {
-    this.getData()
+    this.getData();
+  },
+  computed: {},
+  mounted() {},
 
-  },
-  computed: {
-  },
-  mounted() { },
-  beforeDestroy() {
-    this.clearData()
-  },
   methods: {
-    clearData() {
-      if (this.timer) {
-        clearInterval(this.timer)
-        this.timer = null
-      }
-    },
+  
 
     getData() {
-      this.pageflag = true
-      // this.pageflag =false
-      currentGET('big7', { gatewayno: this.gatewayno }).then(res => {
+      const res = {
+        success: true,
+        data: [
+          { value: 888, name: "秦皇岛市" },
+          { value: 859, name: "晋中市" },
+          { value: 783, name: "来宾市" },
+          { value: 531, name: "铜陵市" },
+          { value: 427, name: "海北藏族自治州" },
+          { value: 335, name: "铁岭市" },
+          { value: 304, name: "昌都地区" },
+          { value: 226, name: "西双版纳傣族自治州" },
+        ],
+      };
 
-        if (!this.timer) {
-          console.log('报警排名', res);
-        }
-        if (res.success) {
-          this.config = {
-            ...this.config,
-            data: res.data
-          }
-       
-        } else {
-          this.pageflag = false
-          this.srcList = []
-          this.$Message({
-            text: res.msg,
-            type: 'warning'
-          })
-        }
-      })
+      this.config = {
+        ...this.config,
+        data: res.data,
+      };
     },
   },
 };
 </script>
-<style lang='scss' scoped>
+<style lang="scss" scoped>
 .list_Wrap {
   height: 100%;
   overflow: hidden;
-  :deep(.kong)   {
+  :deep(.kong) {
     width: auto;
   }
 }
@@ -77,7 +61,6 @@ export default {
   .img_wrap {
     overflow-x: auto;
   }
-
 }
 
 .right_bottom {
@@ -104,7 +87,8 @@ export default {
         margin-left: 30px;
       }
 
-      input {}
+      input {
+      }
     }
   }
 
@@ -131,10 +115,6 @@ export default {
         flex-shrink: 0;
       }
     }
-
-
-
-
   }
 
   .noData {
@@ -142,7 +122,6 @@ export default {
     line-height: 100px;
     text-align: center;
     color: rgb(129, 128, 128);
-
   }
 }
 </style>

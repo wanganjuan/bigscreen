@@ -3,22 +3,21 @@
     id="rightTop"
     :options="option"
     class="right_top_inner"
-    v-if="pageflag"
     ref="charts"
   />
 </template>
 
 <script>
 import Echart from "../components/echart/index.vue";
-import { currentGET } from "api/modules";
+
 import { graphic } from "echarts";
 export default {
   components: { Echart },
   data() {
     return {
       option: {},
-      pageflag: false,
-      timer: null,
+
+  
     };
   },
   created() {},
@@ -26,35 +25,27 @@ export default {
   mounted() {
     this.getData();
   },
-  beforeDestroy() {
-    this.clearData();
-  },
+ 
   methods: {
-    clearData() {
-      if (this.timer) {
-        clearInterval(this.timer);
-        this.timer = null;
-      }
-    },
+  
     getData() {
-      this.pageflag = true;
-      // this.pageflag =false
-      currentGET("big4").then((res) => {
-        if (!this.timer) {
-          console.log("报警次数", res);
-        }
-        if (res.success) {
-          this.countUserNumData = res.data;
-          this.$nextTick(() => {
-            this.init(res.data.dateList, res.data.numList, res.data.numList2);
-          });
-        } else {
-          this.pageflag = false;
-          this.$Message({
-            text: res.msg,
-            type: "warning",
-          });
-        }
+      const res = {
+        success: true,
+        data: {
+          dateList: [
+            "2021-11",
+            "2021-12",
+            "2022-01",
+            "2022-02",
+            "2022-03",
+            "2022-04",
+          ],
+          numList: [91, 37, 19, 22, 61, 35],
+          numList2: [17, 49, 77, 75, 22, 67],
+        },
+      };
+      this.$nextTick(() => {
+        this.init(res.data.dateList, res.data.numList, res.data.numList2);
       });
     },
     //轮询
